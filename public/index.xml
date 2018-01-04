@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Anil Madamala</title>
-    <link>http://.madamala.com/</link>
+    <link>http://amadamala.com/</link>
     <description>Recent content on Anil Madamala</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 08 Apr 2016 22:28:00 -0800</lastBuildDate>
     
-	<atom:link href="http://.madamala.com/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://amadamala.com/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Implementing HashTable in Java</title>
-      <link>http://.madamala.com/posts/implementing-hashtable-in-java/</link>
+      <link>http://amadamala.com/posts/implementing-hashtable-in-java/</link>
       <pubDate>Fri, 08 Apr 2016 22:28:00 -0800</pubDate>
       
-      <guid>http://.madamala.com/posts/implementing-hashtable-in-java/</guid>
+      <guid>http://amadamala.com/posts/implementing-hashtable-in-java/</guid>
       <description>I have been asked before about how would I implement Hashtable in Java.
 Before going into code, here are the steps I have used to implement HashTable.
  Encapsulate key, value pair and linked list with HashEntry class.
@@ -26,10 +26,10 @@ Before going into code, here are the steps I have used to implement HashTable.
     
     <item>
       <title>Hello World</title>
-      <link>http://.madamala.com/posts/hello-world/</link>
+      <link>http://amadamala.com/posts/hello-world/</link>
       <pubDate>Thu, 07 Apr 2016 19:11:55 -0800</pubDate>
       
-      <guid>http://.madamala.com/posts/hello-world/</guid>
+      <guid>http://amadamala.com/posts/hello-world/</guid>
       <description>Hello beautiful world !!
 Created this domain in Google Domains. Wrote the content on Jekyll. Pushed to github pages. Configured DNS records in Google domains. So that website can have personal url.
 Now what ?
