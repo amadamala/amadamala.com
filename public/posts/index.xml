@@ -17,11 +17,9 @@
       <pubDate>Fri, 08 Apr 2016 22:28:00 -0800</pubDate>
       
       <guid>http://amadamala.com/posts/implementing-hashtable-in-java/</guid>
-      <description>I have been asked before about how would I implement Hashtable in Java.
-Before going into code, here are the steps I have used to implement HashTable.
- Encapsulate key, value pair and linked list with HashEntry class.
- Create buckets (Just an array of HashEntry) put(key, value) calculates hash from key and inserts in bucket at position index=hash.
- Incase we already have an entry for the hash, insert entry at the end of linked list maintained by entry.</description>
+      <description>I have been asked before how I would implement a hash table in Java.
+Before going into the code, here are the steps I used to implement HashTable.
+ Encapsulate the key, the value, and a link to the next entry in a HashEntry class. Create the buckets, which are an array of HashEntry. put(key, value) calculates the bucket index from the hash code of key.  If the bucket is empty, the new entry becomes the first entry of the bucket.</description>
     </item>
     
     <item>

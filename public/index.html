@@ -3,7 +3,7 @@
 <head>
   <link href="http://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.32.1" />
+  <meta name="generator" content="Hugo 0.55.6" />
 
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
@@ -40,7 +40,7 @@
       
     </ul>
 
-    <p>&copy; 2018. All rights reserved. </p>
+    <p>&copy; 2026. All rights reserved. </p>
   </div>
 </div>
 
@@ -51,11 +51,9 @@
     <a href="http://amadamala.com/posts/implementing-hashtable-in-java/">Implementing HashTable in Java</a>
   </h1>
   <span class="post-date">Fri, Apr 8, 2016</span>
-  I have been asked before about how would I implement Hashtable in Java.
-Before going into code, here are the steps I have used to implement HashTable.
- Encapsulate key, value pair and linked list with HashEntry class.
- Create buckets (Just an array of HashEntry) put(key, value) calculates hash from key and inserts in bucket at position index=hash.
- Incase we already have an entry for the hash, insert entry at the end of linked list maintained by entry.
+  I have been asked before how I would implement a hash table in Java.
+Before going into the code, here are the steps I used to implement HashTable.
+ Encapsulate the key, the value, and a link to the next entry in a HashEntry class. Create the buckets, which are an array of HashEntry. put(key, value) calculates the bucket index from the hash code of key.  If the bucket is empty, the new entry becomes the first entry of the bucket.
   
   <div class="read-more-link">
     <a href="/posts/implementing-hashtable-in-java/">Read More…</a>
