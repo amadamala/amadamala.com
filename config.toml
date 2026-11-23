@@ -4,5 +4,5 @@ title = "Anil Madamala"
 theme = "hyde"
 
 [params]
-  description = "I’m a developer with 10 years of expericence in building scalable web applicaitons using Java and cloud services. You can reach me at amadamala@gmail.com"
+  description = "I am an engineering and research leader at ServiceNow, where I manage teams that work on benchmarks, LLM evaluations, and self-improving agents. I write here about LLMs, evaluations, and self-improving agents. The opinions on this blog are my own and do not represent my employer. You can reach me at amadamala@gmail.com"
   author = "Anil Madamala"
