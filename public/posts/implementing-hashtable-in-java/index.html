@@ -3,7 +3,7 @@
 <head>
   <link href="http://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.55.6" />
+  <meta name="generator" content="Hugo 0.56.3" />
 
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
@@ -73,132 +73,132 @@
 
 <p>The code is not meant to be a complete solution, and it only has the bare bones. For example, the number of buckets is fixed at 16, so the linked lists get longer as you add more keys. A complete hash table creates a larger array and moves the entries when the table fills up, and it also supports removing a key.</p>
 
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HashTable</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> BUCKET_COUNT <span style="color:#f92672">=</span> 16<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> HashEntry<span style="color:#f92672">[]</span> buckets <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashEntry<span style="color:#f92672">[</span>BUCKET_COUNT<span style="color:#f92672">];</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">class</span> HashTable {
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">static</span> <span style="color:#66d9ef">final</span> <span style="color:#a6e22e">int</span> BUCKET_COUNT <span style="color:#f92672">=</span> 16;
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">final</span> HashEntry[] <span style="color:#a6e22e">buckets</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashEntry[BUCKET_COUNT];
 
     <span style="color:#75715e">/**
 </span><span style="color:#75715e">     * Adds the key and value. If the key is already in
 </span><span style="color:#75715e">     * the table, replaces its value.
 </span><span style="color:#75715e">     */</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>String key<span style="color:#f92672">,</span> String value<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">int</span> index <span style="color:#f92672">=</span> getIndex<span style="color:#f92672">(</span>key<span style="color:#f92672">);</span>
-        HashEntry entry <span style="color:#f92672">=</span> buckets<span style="color:#f92672">[</span>index<span style="color:#f92672">];</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>entry <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            buckets<span style="color:#f92672">[</span>index<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashEntry<span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> value<span style="color:#f92672">);</span>
-            <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">void</span> put(String <span style="color:#a6e22e">key</span>, String <span style="color:#a6e22e">value</span>) {
+        <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">index</span> <span style="color:#f92672">=</span> getIndex(key);
+        HashEntry <span style="color:#a6e22e">entry</span> <span style="color:#f92672">=</span> buckets[index];
+        <span style="color:#66d9ef">if</span> (entry <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
+            buckets[index] <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashEntry(key, value);
+            <span style="color:#66d9ef">return</span>;
+        }
         <span style="color:#75715e">// Walk the linked list of the bucket. Update the
 </span><span style="color:#75715e"></span>        <span style="color:#75715e">// value if the key exists, or else add a new
 </span><span style="color:#75715e"></span>        <span style="color:#75715e">// entry at the end of the list.
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>entry<span style="color:#f92672">.</span><span style="color:#a6e22e">key</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>key<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-                entry<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> value<span style="color:#f92672">;</span>
-                <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>entry<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                entry<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashEntry<span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> value<span style="color:#f92672">);</span>
-                <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span>
-            entry <span style="color:#f92672">=</span> entry<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>) {
+            <span style="color:#66d9ef">if</span> (entry.<span style="color:#a6e22e">key</span>.<span style="color:#a6e22e">equals</span>(key)) {
+                entry.<span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> value;
+                <span style="color:#66d9ef">return</span>;
+            }
+            <span style="color:#66d9ef">if</span> (entry.<span style="color:#a6e22e">next</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
+                entry.<span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashEntry(key, value);
+                <span style="color:#66d9ef">return</span>;
+            }
+            entry <span style="color:#f92672">=</span> entry.<span style="color:#a6e22e">next</span>;
+        }
+    }
 
     <span style="color:#75715e">/**
 </span><span style="color:#75715e">     * Returns &#39;null&#39; if the key is not found.
 </span><span style="color:#75715e">     */</span>
-    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>String key<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        HashEntry entry <span style="color:#f92672">=</span> buckets<span style="color:#f92672">[</span>getIndex<span style="color:#f92672">(</span>key<span style="color:#f92672">)];</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">String</span> get(String <span style="color:#a6e22e">key</span>) {
+        HashEntry <span style="color:#a6e22e">entry</span> <span style="color:#f92672">=</span> buckets[getIndex(key)];
         <span style="color:#75715e">// Check the linked list of the bucket for a
 </span><span style="color:#75715e"></span>        <span style="color:#75715e">// match for the given &#39;key&#39;.
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>entry <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>entry<span style="color:#f92672">.</span><span style="color:#a6e22e">key</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>key<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">return</span> entry<span style="color:#f92672">.</span><span style="color:#a6e22e">value</span><span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span>
-            entry <span style="color:#f92672">=</span> entry<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
-    <span style="color:#f92672">}</span>
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">while</span> (entry <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+            <span style="color:#66d9ef">if</span> (entry.<span style="color:#a6e22e">key</span>.<span style="color:#a6e22e">equals</span>(key)) {
+                <span style="color:#66d9ef">return</span> entry.<span style="color:#a6e22e">value</span>;
+            }
+            entry <span style="color:#f92672">=</span> entry.<span style="color:#a6e22e">next</span>;
+        }
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>;
+    }
 
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getIndex</span><span style="color:#f92672">(</span>String key<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>key <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;key is null&#34;</span><span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">int</span> getIndex(String <span style="color:#a6e22e">key</span>) {
+        <span style="color:#66d9ef">if</span> (key <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
+            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException(<span style="color:#e6db74">&#34;key is null&#34;</span>);
+        }
         <span style="color:#75715e">// Piggy backing on the java string hashcode
 </span><span style="color:#75715e"></span>        <span style="color:#75715e">// implementation. hashCode() can be negative, and
 </span><span style="color:#75715e"></span>        <span style="color:#75715e">// floorMod keeps the index between 0 and
 </span><span style="color:#75715e"></span>        <span style="color:#75715e">// BUCKET_COUNT - 1.
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> Math<span style="color:#f92672">.</span><span style="color:#a6e22e">floorMod</span><span style="color:#f92672">(</span>key<span style="color:#f92672">.</span><span style="color:#a6e22e">hashCode</span><span style="color:#f92672">(),</span> BUCKET_COUNT<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> Math.<span style="color:#a6e22e">floorMod</span>(key.<span style="color:#a6e22e">hashCode</span>(), BUCKET_COUNT);
+    }
 
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HashEntry</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">final</span> String key<span style="color:#f92672">;</span>
-        String value<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HashEntry</span> {
+        <span style="color:#66d9ef">final</span> <span style="color:#a6e22e">String</span> key;
+        String <span style="color:#a6e22e">value</span>;
         <span style="color:#75715e">// Next entry in the same bucket.
-</span><span style="color:#75715e"></span>        HashEntry next<span style="color:#f92672">;</span>
+</span><span style="color:#75715e"></span>        HashEntry <span style="color:#a6e22e">next</span>;
 
-        HashEntry<span style="color:#f92672">(</span>String key<span style="color:#f92672">,</span> String value<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">key</span> <span style="color:#f92672">=</span> key<span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> value<span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
+        HashEntry(String <span style="color:#a6e22e">key</span>, String <span style="color:#a6e22e">value</span>) {
+            <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">key</span> <span style="color:#f92672">=</span> key;
+            <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> value;
+        }
 
         <span style="color:#a6e22e">@Override</span>
-        <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toString</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;[&#34;</span> <span style="color:#f92672">+</span> key <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;, &#34;</span> <span style="color:#f92672">+</span> value <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;]&#34;</span><span style="color:#f92672">;</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">String</span> toString() {
+            <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;[&#34;</span> <span style="color:#f92672">+</span> key <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;, &#34;</span> <span style="color:#f92672">+</span> value <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;]&#34;</span>;
+        }
+    }
 
     <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toString</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        StringBuilder hashTableStr <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StringBuilder<span style="color:#f92672">();</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> buckets<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-            HashEntry entry <span style="color:#f92672">=</span> buckets<span style="color:#f92672">[</span>i<span style="color:#f92672">];</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>entry <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">continue</span><span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span>
-            hashTableStr<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;\n bucket[&#34;</span><span style="color:#f92672">)</span>
-                    <span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>i<span style="color:#f92672">)</span>
-                    <span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;] = &#34;</span><span style="color:#f92672">)</span>
-                    <span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>entry<span style="color:#f92672">);</span>
-            entry <span style="color:#f92672">=</span> entry<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
-            <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>entry <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                hashTableStr<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; -&gt; &#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>entry<span style="color:#f92672">);</span>
-                entry <span style="color:#f92672">=</span> entry<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">return</span> hashTableStr<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">String</span> toString() {
+        StringBuilder <span style="color:#a6e22e">hashTableStr</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StringBuilder();
+        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> 0; i <span style="color:#f92672">&lt;</span> buckets.<span style="color:#a6e22e">length</span>; i<span style="color:#f92672">++</span>) {
+            HashEntry <span style="color:#a6e22e">entry</span> <span style="color:#f92672">=</span> buckets[i];
+            <span style="color:#66d9ef">if</span> (entry <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
+                <span style="color:#66d9ef">continue</span>;
+            }
+            hashTableStr.<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34;\n bucket[&#34;</span>)
+                    .<span style="color:#a6e22e">append</span>(i)
+                    .<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34;] = &#34;</span>)
+                    .<span style="color:#a6e22e">append</span>(entry);
+            entry <span style="color:#f92672">=</span> entry.<span style="color:#a6e22e">next</span>;
+            <span style="color:#66d9ef">while</span> (entry <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+                hashTableStr.<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34; -&gt; &#34;</span>).<span style="color:#a6e22e">append</span>(entry);
+                entry <span style="color:#f92672">=</span> entry.<span style="color:#a6e22e">next</span>;
+            }
+        }
+        <span style="color:#66d9ef">return</span> hashTableStr.<span style="color:#a6e22e">toString</span>();
+    }
 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        HashTable hashTable <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashTable<span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String[] <span style="color:#a6e22e">args</span>) {
+        HashTable <span style="color:#a6e22e">hashTable</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashTable();
         <span style="color:#75715e">// Put some key values.
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> 30<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">final</span> String key <span style="color:#f92672">=</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>i<span style="color:#f92672">);</span>
-            hashTable<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> key<span style="color:#f92672">);</span>
-        <span style="color:#f92672">}</span>
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> 0; i <span style="color:#f92672">&lt;</span> 30; i<span style="color:#f92672">++</span>) {
+            <span style="color:#66d9ef">final</span> <span style="color:#a6e22e">String</span> key <span style="color:#f92672">=</span> String.<span style="color:#a6e22e">valueOf</span>(i);
+            hashTable.<span style="color:#a6e22e">put</span>(key, key);
+        }
 
         <span style="color:#75715e">// Print the HashTable structure
-</span><span style="color:#75715e"></span>        log<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;****   HashTable  ***&#34;</span><span style="color:#f92672">);</span>
-        log<span style="color:#f92672">(</span>hashTable<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">());</span>
-        log<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;\nValue for key(20) : &#34;</span> <span style="color:#f92672">+</span> hashTable<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;20&#34;</span><span style="color:#f92672">));</span>
+</span><span style="color:#75715e"></span>        log(<span style="color:#e6db74">&#34;****   HashTable  ***&#34;</span>);
+        log(hashTable.<span style="color:#a6e22e">toString</span>());
+        log(<span style="color:#e6db74">&#34;\nValue for key(20) : &#34;</span> <span style="color:#f92672">+</span> hashTable.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;20&#34;</span>));
 
         <span style="color:#75715e">// Putting an existing key replaces its value.
-</span><span style="color:#75715e"></span>        hashTable<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;20&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;twenty&#34;</span><span style="color:#f92672">);</span>
-        log<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Value for key(20) after second put : &#34;</span> <span style="color:#f92672">+</span> hashTable<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;20&#34;</span><span style="color:#f92672">));</span>
+</span><span style="color:#75715e"></span>        hashTable.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;20&#34;</span>, <span style="color:#e6db74">&#34;twenty&#34;</span>);
+        log(<span style="color:#e6db74">&#34;Value for key(20) after second put : &#34;</span> <span style="color:#f92672">+</span> hashTable.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;20&#34;</span>));
 
         <span style="color:#75715e">// A key that is not in the table returns null.
-</span><span style="color:#75715e"></span>        log<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Value for key(99) : &#34;</span> <span style="color:#f92672">+</span> hashTable<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;99&#34;</span><span style="color:#f92672">));</span>
+</span><span style="color:#75715e"></span>        log(<span style="color:#e6db74">&#34;Value for key(99) : &#34;</span> <span style="color:#f92672">+</span> hashTable.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;99&#34;</span>));
 
         <span style="color:#75715e">// &#34;polygenelubricants&#34;.hashCode() is negative.
-</span><span style="color:#75715e"></span>        hashTable<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;polygenelubricants&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;negative hash&#34;</span><span style="color:#f92672">);</span>
-        log<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Value for key(polygenelubricants) : &#34;</span>
-                <span style="color:#f92672">+</span> hashTable<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;polygenelubricants&#34;</span><span style="color:#f92672">));</span>
-    <span style="color:#f92672">}</span>
+</span><span style="color:#75715e"></span>        hashTable.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;polygenelubricants&#34;</span>, <span style="color:#e6db74">&#34;negative hash&#34;</span>);
+        log(<span style="color:#e6db74">&#34;Value for key(polygenelubricants) : &#34;</span>
+                <span style="color:#f92672">+</span> hashTable.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;polygenelubricants&#34;</span>));
+    }
 
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">log</span><span style="color:#f92672">(</span>String msg<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>msg<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span></code></pre></div>
+    <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">log</span>(String <span style="color:#a6e22e">msg</span>) {
+        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(msg);
+    }
+}</code></pre></div>
 
 <p>Here is the console output from running the above code.</p>
 

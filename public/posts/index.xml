@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Anil Madamala</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 08 Apr 2016 22:28:00 -0800</lastBuildDate>
+    <lastBuildDate>Thu, 26 Nov 2026 22:55:00 -0800</lastBuildDate>
     
 	<atom:link href="http://amadamala.com/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Calibrating an LLM judge against human labels</title>
+      <link>http://amadamala.com/posts/calibrating-llm-judge/</link>
+      <pubDate>Thu, 26 Nov 2026 22:55:00 -0800</pubDate>
+      
+      <guid>http://amadamala.com/posts/calibrating-llm-judge/</guid>
+      <description>An LLM judge is a model that reads the output of another model and decides whether the output is good. Teams use LLM judges because people are too slow to grade every output, and exact string matching can&amp;rsquo;t grade open-ended answers.
+The problem is that a judge is also a model, and a judge makes mistakes. If you report &amp;ldquo;92% of answers passed&amp;rdquo; and the judge is wrong on one answer in five, nobody knows what the 92% means.</description>
+    </item>
     
     <item>
       <title>Implementing HashTable in Java</title>
